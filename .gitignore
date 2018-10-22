@@ -1,0 +1,5 @@
+EmbSysLib/
+Bin/
+*.uvgui.*
+*.bak
+*.dep
