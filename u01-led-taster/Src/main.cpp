@@ -6,12 +6,29 @@
 #define LED1_PIN 28
 //*******************************************************************
 
-//void pin_an/_aus(int PIN)
-//void pin_init(LPC_GPIO_TypeDef* PORT, int PIN, bool isOut) {}
-//bool pin_lesen(...)
+class Pin {
+public:
+	int PIN;
+	LPC_GPIO_TypeDef* PORT;
+	bool alterZustand;
+
+	Pin(LPC_GPIO_TypeDef* PORT, int PIN, bool isOut) {
+		// ... init ...
+	}
+
+	//void init(bool isOut) {}
+
+
+	//void an/_aus()
+	//bool lesen(...)
+
+};
+
 
 int main(void)
 {
+	Pin led1;
+	
 	// Setze GPIO1, Pin 28 Output (1 an Stelle 28 schreiben) (LED)
 	LPC_GPIO1->FIODIR |= (1 << 28);
 	// Setze GPIO2, Pin 10 Input (0 an Stelle 10 schreiben) (Taster)
