@@ -1,8 +1,15 @@
 //*******************************************************************
-#include "lib.h"
-#include "config.h"
+//#include "lib.h"
+//#include "config.h"
+#include <LPC17xx.H>
 
+#define LED1_PIN 28
 //*******************************************************************
+
+//void pin_an/_aus(int PIN)
+//void pin_init(LPC_GPIO_TypeDef* PORT, int PIN, bool isOut) {}
+//bool pin_lesen(...)
+
 int main(void)
 {
 	// Setze GPIO1, Pin 28 Output (1 an Stelle 28 schreiben) (LED)
@@ -15,12 +22,13 @@ int main(void)
 	{
 		// Falls GPIO2, Pin 10 == 1 (d.h. Taster gedrückt)
   		// (Frage: Warum geht hier nicht FIOPIN statt FIOSET?)
-		if (LPC_GPIO2->FIOSET & (1 << 10)) {
+		if (LPC_GPIO2->FIOPIN & (1 << 10)) {
 			// Schreibe 1 in GPIO1, Pin 28 (LED an)
 			LPC_GPIO1->FIOSET = (1 << 28);
 		} else {
 			// Schreibe 0 in GPIO1, Pin 28 (LED aus)
-			LPC_GPIO1->FIOSET &= ~(1 << 28);
+			// LPC_GPIO1->FIOSET &= ~(1 << 28);
+			LPC_GPIO1->FIOCLR = 1 << 28;
 		}
 	}
 }
