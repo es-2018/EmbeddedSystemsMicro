@@ -10,42 +10,46 @@
 //*******************************************************************
 
 class Pin {
-public:
-	LPC_GPIO_TypeDef* PORT;	
-	int PIN;
-  bool ISOUT;
+private:
+	LPC_GPIO_TypeDef* port;	
+	int pin;
+	bool isOut;
 	bool alterZustand;
 
+public:
 	Pin(LPC_GPIO_TypeDef* port, int pin, bool isOut) {
-		PORT = port;
-		PIN = pin;
-		ISOUT = isOut;
+		this->port = port;
+		this->pin = pin;
+		this->isOut = isOut;
 		
-		if (isOut) {
+		if (this->isOut) {
 			// Setze Pin als Output (1 an Stelle <pin> schreiben)
-			port->FIODIR |= (1 << pin);
+			this->port->FIODIR |= (1 << pin);
 		} else {
 			// Setze Pin als Input (0 an Stelle <pin> schreiben)
-			port->FIODIR &= ~(1 << pin);
+			this->port->FIODIR &= ~(1 << pin);
 		}
 	}
 
 	void an() {
 		// Pin auf HIGH setzen (schreibe 1 an Stelle <pin> in FIOSET)
-		PORT->FIOSET = (1 << PIN);
+		port->FIOSET = (1 << pin);
 	}
 	
 	void aus() {
 		// Pin auf LOW setzen (schreibe 1 an Stelle <pin> in FIOCLR)
-		PORT->FIOCLR = (1 << PIN);
+		port->FIOCLR = (1 << pin);
 	}
 	
 	bool lesen() {
 		// Frage: Warum nicht: return PORT->FIOPIN & (1 << PIN); ?
-		return PORT->FIOSET & (1 << PIN);
+		return port->FIOSET & (1 << pin);
+	}
+	
+	bool isOutput() {
+		return isOut;
 	}
 };
-
 
 int main(void) {
 	Pin led1 = Pin(LED1_PORT, LED1_PIN, true);
