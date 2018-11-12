@@ -4,7 +4,7 @@
 #include <LPC17xx.H>
 
 #define LED1_PORT LPC_GPIO1
-#define LED1_PIN 28
+#define LED1_PIN 29
 #define BTN1_PORT LPC_GPIO2
 #define BTN1_PIN 10
 //*******************************************************************
@@ -41,9 +41,19 @@ public:
 		port->FIOCLR = (1 << pin);
 	}
 	
+	void toggle() {
+		if (isOutput()) {
+			if (lesen()) {
+				aus();
+			}else {
+				an();
+			}
+		}
+	}
+	
 	bool lesen() {
-		// Frage: Warum nicht: return PORT->FIOPIN & (1 << PIN); ?
-		return port->FIOSET & (1 << pin);
+		// FIOPin-Register auslesen
+		return port->FIOPIN & (1 << pin);
 	}
 	
 	bool isOutput() {
@@ -55,12 +65,14 @@ int main(void) {
 	Pin led1 = Pin(LED1_PORT, LED1_PIN, true);
 	Pin btn1 = Pin(BTN1_PORT, BTN1_PIN, false);
 	
+	int previousButtonState = -1;
+	
 	while(1) {
-		if (btn1.lesen()) {
-			led1.an();
-		} else {
-			led1.aus();
+		int buttonState = btn1.lesen();
+		if (buttonState && buttonState != previousButtonState) {
+			led1.toggle();
 		}
+		previousButtonState = buttonState;
 	}
 }
 //EOF
