@@ -28,6 +28,7 @@ public:
 		} else {
 			// Setze Pin als Input (0 an Stelle <pin> schreiben)
 			this->port->FIODIR &= ~(1 << pin);
+			alterZustand = lesen();
 		}
 	}
 
@@ -45,7 +46,7 @@ public:
 		if (isOutput()) {
 			if (lesen()) {
 				aus();
-			}else {
+			} else {
 				an();
 			}
 		}
@@ -59,20 +60,26 @@ public:
 	bool isOutput() {
 		return isOut;
 	}
+	
+	bool steigendeFlanke() {
+		int zustand = lesen();
+		bool ret = false;
+		if (zustand && zustand != alterZustand) {
+			ret = true;
+		}
+		alterZustand = zustand;
+		return ret;
+	}
 };
 
 int main(void) {
 	Pin led1 = Pin(LED1_PORT, LED1_PIN, true);
 	Pin btn1 = Pin(BTN1_PORT, BTN1_PIN, false);
 	
-	int previousButtonState = -1;
-	
 	while(1) {
-		int buttonState = btn1.lesen();
-		if (buttonState && buttonState != previousButtonState) {
+		if (btn1.steigendeFlanke()) {
 			led1.toggle();
 		}
-		previousButtonState = buttonState;
 	}
 }
 //EOF
