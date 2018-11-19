@@ -13,13 +13,6 @@
 //*******************************************************************
 
 
-
-//class PinGPIO : public Pin {
-//public:
-	
-//};
-
-
 int main(void) {
 	PinGPIO led1 = PinGPIO(LED1_PORT, LED1_PIN, true);
 	PinGPIO btn1 = PinGPIO(BTN1_PORT, BTN1_PIN, false);
