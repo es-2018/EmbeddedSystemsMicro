@@ -4,7 +4,7 @@
 #include <LPC17xx.H>
 #include "Pin.hpp"
 #include "PinGPIO.hpp"
-#include "Timer0.cpp"
+#include "Timer0.hpp"
 
 #define LED1_PORT LPC_GPIO1
 #define LED1_PIN 29
@@ -12,19 +12,14 @@
 #define BTN1_PIN 10
 //*******************************************************************
 
-PinGPIO* led = NULL;
 
 // Interrupt-Handler müssen als C-Funktionen deklariert werden
+/* IRQ für Taster
 extern "C" {
 	void EINT0_IRQHandler(void);
 }
 
-extern "C" {
-	void TIMER0_IRQHandler(void) {
-		LPC_TIM0->IR = LPC_TIM0->IR;
-		Timer0::ptr->isr();
-	}
-}
+PinGPIO* led = NULL;
 
 // Interrupt Service Routine für EINT0
 void EINT0_IRQHandler(void) {
@@ -35,9 +30,17 @@ void EINT0_IRQHandler(void) {
 	if (led) {
 		led->toggle();
 	}
+}*/ 
+
+extern "C" {
+	void TIMER0_IRQHandler(void) {
+		LPC_TIM0->IR = LPC_TIM0->IR;
+		Timer0::ptr->isr();
+	}
 }
 
 int main(void) {
+  Timer0::ptr = NULL;
 	Timer0 t0 (30);
 	
 	

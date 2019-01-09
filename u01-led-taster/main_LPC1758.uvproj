@@ -435,6 +435,11 @@
               <FileType>8</FileType>
               <FilePath>.\Src\PinGPIO.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Timer0.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Src\Timer0.cpp</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
